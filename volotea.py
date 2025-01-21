@@ -23,6 +23,7 @@ time.sleep(1)
 clase_origen = "v7-sf__group-item--origin"
 casilla_origen = driver.find_elements(By.CLASS_NAME, clase_origen)[0]
 casilla_origen.click()
+time.sleep(1)
 
 id_origen = "header-mobile__search origin"
 casilla_origen = driver.find_element(By.ID, id_origen)
@@ -31,18 +32,26 @@ casilla_origen.get_attribute("id")
 
 casilla_origen.clear()
 casilla_origen.send_keys("Bilbao")
+time.sleep(1)
 casilla_origen.send_keys(Keys.ENTER)
 
-
+time.sleep(1)
 clase_ciudad = "v7-card__title.v7-sub-title.v7-sub-title--md.v7-u-bold"
 destinos = driver.find_elements(By.CLASS_NAME, clase_ciudad)
 
+destinos[0].screenshot("destino.png")
 for destino in destinos:
-    # print(destino.text)
+    print(destino.text)
     if destino.text == "Gran Canaria":
         destino.click()
+        break
 
+time.sleep(1)
 driver.find_element(By.CLASS_NAME, "v7-input-text").click()
+time.sleep(0.5)
+casillas_meses = driver.find_elements(By.CLASS_NAME, "v7-input-select__item")
+
+nombres_meses = [casilla_mes.text for casilla_mes in casillas_meses]
 
 def extrae_dia(dia, mes: str):
     fila_datos = {}
@@ -50,21 +59,25 @@ def extrae_dia(dia, mes: str):
         fila_datos["mes"] = mes
         fila_datos["numero_dia"] = dia.find_element(By.CLASS_NAME, "v7-cal__number").text
         fila_datos["precio"] = dia.find_element(By.CLASS_NAME, "v7-cal__amount").text
-        return fila_datos
+        lista_datos.append(fila_datos)
+        print(fila_datos)
 
-
-tag_mes = "sf-calendar-month"
-meses = driver.find_elements(By.TAG_NAME, tag_mes)
-len(meses)
-
-mes = meses[1]
-def extrae_mes(mes):
+def extrae_mes(mes, nombre_mes):
     tag_dia = "sf-calendar-day"
     dias = mes.find_elements(By.TAG_NAME, tag_dia)
     for dia in dias:
-        print(extrae_dia(dia, "Febrero"))
+        extrae_dia(dia, nombre_mes)
 
-extrae_mes(mes)
+tag_mes = "sf-calendar-month"
+meses = driver.find_elements(By.TAG_NAME, tag_mes)
 
+lista_datos = []
+for mes, nombre_mes in zip(meses, nombres_meses):
+    extrae_mes(mes, nombre_mes)
+
+import pandas as pd
+datos = pd.DataFrame(lista_datos)
+
+datos.to_csv("Bilbao-GranCanaria.csv")
 
 driver.close()
