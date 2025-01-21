@@ -10,6 +10,7 @@ driver.get("https://www.volotea.com/es/")
 print(driver.title)
 print(driver.current_url)
 
+# Aceptar cookies
 id_cookies_aceptar = "onetrust-accept-btn-handler"
 boton_cookies = driver.find_element(By.ID, id_cookies_aceptar)
 boton_cookies.click()
@@ -21,7 +22,7 @@ time.sleep(1)
 # casilla_origen = driver.find_element(By.ID, id_origen)
 
 clase_origen = "v7-sf__group-item--origin"
-casilla_origen = driver.find_elements(By.CLASS_NAME, clase_origen)[0]
+casilla_origen = driver.find_element(By.CLASS_NAME, clase_origen)
 casilla_origen.click()
 time.sleep(1)
 
@@ -39,6 +40,7 @@ time.sleep(1)
 clase_ciudad = "v7-card__title.v7-sub-title.v7-sub-title--md.v7-u-bold"
 destinos = driver.find_elements(By.CLASS_NAME, clase_ciudad)
 
+destinos[0].text
 destinos[0].screenshot("destino.png")
 for destino in destinos:
     print(destino.text)

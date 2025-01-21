@@ -36,4 +36,4 @@ aspas[2].click()
 
 print(driver.current_url)
 
-driver.close()
+#driver.close()
