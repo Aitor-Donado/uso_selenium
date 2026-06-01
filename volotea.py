@@ -9,7 +9,7 @@ driver.get("https://www.volotea.com/es/")
 
 print(driver.title)
 print(driver.current_url)
-
+input()
 # Aceptar cookies
 id_cookies_aceptar = "onetrust-accept-btn-handler"
 boton_cookies = driver.find_element(By.ID, id_cookies_aceptar)
@@ -29,7 +29,7 @@ time.sleep(1)
 id_origen = "header-mobile__search origin"
 casilla_origen = driver.find_element(By.ID, id_origen)
 casilla_origen.screenshot("casilla.png")
-casilla_origen.get_attribute("id")
+casilla_origen.get_attribute("class")
 
 casilla_origen.clear()
 casilla_origen.send_keys("Bilbao")
@@ -42,9 +42,10 @@ destinos = driver.find_elements(By.CLASS_NAME, clase_ciudad)
 
 destinos[0].text
 destinos[0].screenshot("destino.png")
+texto_destino = "Alicante"
 for destino in destinos:
     print(destino.text)
-    if destino.text == "Gran Canaria":
+    if destino.text == texto_destino:
         destino.click()
         break
 
@@ -80,6 +81,6 @@ for mes, nombre_mes in zip(meses, nombres_meses):
 import pandas as pd
 datos = pd.DataFrame(lista_datos)
 
-datos.to_csv("Bilbao-GranCanaria.csv")
+datos.to_csv(f"Bilbao-{texto_destino}.csv")
 
 driver.close()
